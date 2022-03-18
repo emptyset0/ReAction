@@ -571,6 +571,11 @@ namespace ReAction
             }
             SetItemTooltip("Removes the Meditation <-> Steel Peak / Forbidden Chakra combo. You will need to use\nthe hotbar feature below to place one of them on your hotbar in order to use them again.");
 
+            ImGui.NextColumn();
+
+            save |= ImGui.Checkbox("Enable Macro Queuing", ref ReAction.Config.EnableMacroQueuing);
+            SetItemTooltip("Allow actions in a macro to be queued");
+
             ImGui.Columns(1);
 
             ImGui.Spacing();

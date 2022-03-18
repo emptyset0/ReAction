@@ -88,6 +88,7 @@ namespace ReAction
         public bool EnableFPSAlignment = false;
         public bool EnableDecomboMeditation = false;
         public bool EnableAutoRefocusTarget = false;
+        public bool EnableMacroQueuing = false;
 
         public void Initialize() { }
 

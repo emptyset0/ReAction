@@ -117,6 +117,22 @@ namespace ReAction
                 if (ReAction.Config.EnableQueuingMore && useType == 0)
                     TryEnablingQueuing(actionType, adjustedActionID);
 
+                if (ReAction.Config.EnableMacroQueuing && useType == 2 && !Game.IsQueued 
+                    && Game.GetActionStatus(actionType, adjustedActionID, targetObjectID, 1, 1) != 0)
+                {
+                    *(bool*)((IntPtr)Game.actionManager + 0x68) = true; // IsQueued
+                    *(uint*)((IntPtr)Game.actionManager + 0x6C) = 1; // QueuedActionType
+                    *(uint*)((IntPtr)Game.actionManager + 0x70) = adjustedActionID; // QueuedAction
+                    *(long*)((IntPtr)Game.actionManager + 0x78) = targetObjectID; // QueuedTarget
+                    *(uint*)((IntPtr)Game.actionManager + 0x80) = 0; // QueuedUseType
+                    *(uint*)((IntPtr)Game.actionManager + 0x84) = 0; // QueuedPVPAction
+
+                    if (ReAction.actionSheet[adjustedActionID].TargetArea && targetObjectID != 0xE0000000)
+                        queuedGroundTargetObjectID = targetObjectID;
+
+                    return 0;
+                }
+
                 ret = Game.UseActionHook.Original(actionManager, actionType, actionID, targetObjectID, param, useType, pvp, isGroundTarget);
 
                 if (Game.allowQueuingReplacer.IsEnabled)
